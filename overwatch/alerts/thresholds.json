@@ -1,0 +1,18 @@
+{
+  "cpu": {
+    "threshold": 90,
+    "enabled": true
+  },
+  "memory": {
+    "threshold": 80,
+    "enabled": true
+  },
+  "disk": {
+    "threshold": 85,
+    "enabled": true
+  },
+  "temperature": {
+    "threshold": 80,
+    "enabled": false
+  }
+}
