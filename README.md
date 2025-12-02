@@ -359,8 +359,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For questions, issues, or suggestions:
 - GitHub Issues: https://github.com/sudoyasir/overwatch/issues
-- Email: y451rmahar@gmail.com
+- Email: info@overwatch.dev
 
 ---
 
-**Made with ❤️ by the Yasir N.**
+**Made with ❤️ by the OverWatch Team**
