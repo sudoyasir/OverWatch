@@ -103,7 +103,15 @@ Example:
 overwatch api --host 127.0.0.1 --port 9000
 ```
 
-Access the API documentation at: `http://localhost:8000/docs`
+**Understanding the API Host:**
+- `0.0.0.0` means the server listens on ALL network interfaces
+- Access locally: `http://localhost:8000` or `http://127.0.0.1:8000`
+- Access from other devices on your network: `http://YOUR_SERVER_IP:8000`
+- Find your server IP: `hostname -I` (Linux) or `ipconfig` (Windows)
+
+**Interactive API Documentation:**
+- Swagger UI: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
 
 ### Other Commands
 
@@ -123,35 +131,201 @@ overwatch metrics --format json
 
 ---
 
-## 📡 API Endpoints
+## 📡 API Usage Guide
 
-### REST API
+### Starting the API Server
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | API root |
-| `/health` | GET | Health check |
-| `/metrics` | GET | All system metrics |
-| `/metrics/cpu` | GET | CPU metrics |
-| `/metrics/memory` | GET | Memory metrics |
-| `/metrics/disk` | GET | Disk metrics |
-| `/metrics/network` | GET | Network metrics |
-| `/metrics/processes` | GET | Process list |
-| `/metrics/sensors` | GET | Sensor data |
-| `/process/{pid}` | GET | Specific process details |
+The API server runs on `0.0.0.0:8000` by default, which means:
+- **Local access**: `http://localhost:8000` or `http://127.0.0.1:8000`
+- **Network access**: `http://YOUR_SERVER_IP:8000` (from other devices on your network)
+- **Production**: Use a reverse proxy like Nginx or deploy behind a load balancer
 
-### WebSocket
+### REST API Endpoints
 
-Connect to `/ws` for real-time metrics streaming (updates every second).
+| Endpoint | Method | Description | Example |
+|----------|--------|-------------|---------|
+| `/` | GET | API root info | `curl http://localhost:8000/` |
+| `/health` | GET | Health check | `curl http://localhost:8000/health` |
+| `/metrics` | GET | All system metrics | `curl http://localhost:8000/metrics` |
+| `/metrics/cpu` | GET | CPU usage & stats | `curl http://localhost:8000/metrics/cpu` |
+| `/metrics/memory` | GET | RAM & swap usage | `curl http://localhost:8000/metrics/memory` |
+| `/metrics/disk` | GET | Disk usage & I/O | `curl http://localhost:8000/metrics/disk` |
+| `/metrics/network` | GET | Network stats | `curl http://localhost:8000/metrics/network` |
+| `/metrics/processes` | GET | Running processes | `curl http://localhost:8000/metrics/processes?limit=10` |
+| `/metrics/sensors` | GET | Temperature sensors | `curl http://localhost:8000/metrics/sensors` |
+| `/process/{pid}` | GET | Process details | `curl http://localhost:8000/process/1234` |
 
-Example using JavaScript:
+### Practical Examples
+
+#### 1. Get CPU Usage (Shell/Bash)
+```bash
+# Simple request
+curl http://localhost:8000/metrics/cpu
+
+# Pretty print JSON
+curl -s http://localhost:8000/metrics/cpu | jq '.'
+
+# Get only CPU percentage
+curl -s http://localhost:8000/metrics/cpu | jq '.percent'
+```
+
+#### 2. Monitor Memory (Python)
+```python
+import requests
+
+response = requests.get('http://localhost:8000/metrics/memory')
+data = response.json()
+
+print(f"RAM Usage: {data['virtual']['percent']}%")
+print(f"Available: {data['virtual']['available_gb']:.2f} GB")
+```
+
+#### 3. Watch Disk Space (Node.js)
+```javascript
+const axios = require('axios');
+
+async function checkDisk() {
+    const response = await axios.get('http://localhost:8000/metrics/disk');
+    response.data.partitions.forEach(partition => {
+        console.log(`${partition.device}: ${partition.percent}% used`);
+    });
+}
+
+checkDisk();
+```
+
+#### 4. Real-Time Monitoring Dashboard (HTML/JavaScript)
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OverWatch Monitor</title>
+</head>
+<body>
+    <h1>System Monitor</h1>
+    <div id="metrics"></div>
+    
+    <script>
+        async function updateMetrics() {
+            const response = await fetch('http://localhost:8000/metrics');
+            const data = await response.json();
+            
+            document.getElementById('metrics').innerHTML = `
+                <p>CPU: ${data.cpu.percent}%</p>
+                <p>Memory: ${data.memory.virtual.percent}%</p>
+                <p>Disk: ${data.disk.partitions[0].percent}%</p>
+            `;
+        }
+        
+        // Update every 2 seconds
+        setInterval(updateMetrics, 2000);
+        updateMetrics();
+    </script>
+</body>
+</html>
+```
+
+#### 5. Alert System (Python)
+```python
+import requests
+import time
+
+THRESHOLDS = {
+    'cpu': 90,
+    'memory': 85,
+    'disk': 90
+}
+
+def check_alerts():
+    response = requests.get('http://localhost:8000/metrics')
+    data = response.json()
+    
+    if data['cpu']['percent'] > THRESHOLDS['cpu']:
+        print(f"⚠️  HIGH CPU: {data['cpu']['percent']}%")
+    
+    if data['memory']['virtual']['percent'] > THRESHOLDS['memory']:
+        print(f"⚠️  HIGH MEMORY: {data['memory']['virtual']['percent']}%")
+    
+    for partition in data['disk']['partitions']:
+        if partition['percent'] > THRESHOLDS['disk']:
+            print(f"⚠️  HIGH DISK ({partition['mountpoint']}): {partition['percent']}%")
+
+while True:
+    check_alerts()
+    time.sleep(60)  # Check every minute
+```
+
+#### 6. Export to CSV (Python)
+```python
+import requests
+import csv
+from datetime import datetime
+
+def log_metrics_to_csv():
+    response = requests.get('http://localhost:8000/metrics')
+    data = response.json()
+    
+    with open('metrics_log.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            datetime.now().isoformat(),
+            data['cpu']['percent'],
+            data['memory']['virtual']['percent'],
+            data['disk']['partitions'][0]['percent']
+        ])
+
+log_metrics_to_csv()
+```
+
+### WebSocket Real-Time Streaming
+
+Connect to `/ws` for live metrics updates (1 second interval).
+
+**Python Example:**
+```python
+import asyncio
+import websockets
+import json
+
+async def monitor():
+    uri = "ws://localhost:8000/ws"
+    async with websockets.connect(uri) as websocket:
+        while True:
+            message = await websocket.recv()
+            data = json.loads(message)
+            print(f"CPU: {data['cpu']['percent']}% | Memory: {data['memory']['virtual']['percent']}%")
+
+asyncio.run(monitor())
+```
+
+**JavaScript Example:**
 ```javascript
 const ws = new WebSocket('ws://localhost:8000/ws');
+
+ws.onopen = () => {
+    console.log('Connected to OverWatch');
+};
+
 ws.onmessage = (event) => {
     const metrics = JSON.parse(event.data);
-    console.log(metrics);
+    console.log('CPU:', metrics.cpu.percent + '%');
+    console.log('Memory:', metrics.memory.virtual.percent + '%');
+};
+
+ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
 };
 ```
+
+### Use Cases
+
+1. **DevOps Monitoring**: Integrate with Grafana, Prometheus, or custom dashboards
+2. **CI/CD Pipelines**: Monitor build server resources during deployments
+3. **Load Testing**: Track system performance during stress tests
+4. **Mobile Apps**: Build iOS/Android apps that monitor your servers
+5. **Slack/Discord Bots**: Send alerts to team channels when thresholds are exceeded
+6. **Data Analysis**: Collect historical data for capacity planning
+7. **Home Automation**: Trigger actions based on system metrics
 
 ---
 
