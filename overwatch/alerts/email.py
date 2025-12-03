@@ -107,13 +107,19 @@ class EmailNotifier:
             msg.attach(part2)
             
             # Send email
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+            with smtplib.SMTP(self.smtp_server, self.smtp_port, timeout=30) as server:
                 server.starttls()
                 server.login(self.smtp_username, self.smtp_password)
                 server.send_message(msg)
+                print(f"✓ Email alert sent to {self.to_email}")
                 
+        except smtplib.SMTPAuthenticationError as e:
+            print(f"❌ Email authentication failed: {e}")
+            print("   Check your email credentials. For Gmail, use an App Password.")
+        except smtplib.SMTPException as e:
+            print(f"❌ SMTP error: {e}")
         except Exception as e:
-            print(f"Error sending email notification: {e}")
+            print(f"❌ Error sending email notification: {e}")
     
     def test_connection(self) -> bool:
         """
@@ -123,12 +129,21 @@ class EmailNotifier:
             True if connection successful
         """
         if not self.enabled:
+            print("❌ Email notifier not enabled. Check configuration.")
             return False
         
         try:
+            print(f"Testing connection to {self.smtp_server}:{self.smtp_port}...")
             with smtplib.SMTP(self.smtp_server, self.smtp_port, timeout=10) as server:
                 server.starttls()
+                print("✓ TLS connection established")
                 server.login(self.smtp_username, self.smtp_password)
+                print("✓ Authentication successful")
                 return True
-        except Exception:
+        except smtplib.SMTPAuthenticationError as e:
+            print(f"❌ Authentication failed: {e}")
+            print("   For Gmail: https://myaccount.google.com/apppasswords")
+            return False
+        except Exception as e:
+            print(f"❌ Connection failed: {e}")
             return False

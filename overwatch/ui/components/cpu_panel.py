@@ -23,12 +23,12 @@ def render(data: Dict[str, Any]) -> Panel:
         return Panel(f"[red]Error: {data['error']}[/red]", title="🔴 CPU", border_style="red")
     
     table = Table(show_header=False, box=None, padding=(0, 1))
-    table.add_column("Label", style="cyan")
-    table.add_column("Value", style="white")
+    table.add_column("Label", style="bright_cyan")
+    table.add_column("Value", style="bright_white")
     
     # Overall CPU usage
     total = data.get("total", 0)
-    color = "green" if total < 50 else "yellow" if total < 80 else "red"
+    color = "bright_green" if total < 50 else "bright_yellow" if total < 80 else "bright_red"
     table.add_row("Overall Usage", f"[{color}]{total}%[/{color}]")
     
     # Core count
@@ -53,4 +53,4 @@ def render(data: Dict[str, Any]) -> Panel:
             cores_display += f" ... ({len(per_core)} cores total)"
         table.add_row("Core Usage", cores_display)
     
-    return Panel(table, title="💻 CPU", border_style="blue")
+    return Panel(table, title="💻 CPU", border_style="bright_cyan")

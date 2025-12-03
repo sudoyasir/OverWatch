@@ -27,15 +27,15 @@ def render(data: Dict[str, Any]) -> Panel:
         return Panel(
             "[yellow]No processes found[/yellow]",
             title=f"⚙️  Processes (Total: {total_count})",
-            border_style="blue"
+            border_style="bright_white"
         )
     
     table = Table(show_header=True, box=None, padding=(0, 1))
     table.add_column("PID", style="dim", width=8)
-    table.add_column("Name", style="cyan", width=25)
-    table.add_column("CPU%", style="yellow", width=8)
-    table.add_column("MEM%", style="green", width=8)
-    table.add_column("User", style="magenta", width=15)
+    table.add_column("Name", style="bright_cyan", width=25)
+    table.add_column("CPU%", style="bright_yellow", width=8)
+    table.add_column("MEM%", style="bright_green", width=8)
+    table.add_column("User", style="bright_red", width=15)
     
     for proc in processes[:10]:  # Show top 10 processes
         name = proc.get("name", "")
@@ -59,5 +59,5 @@ def render(data: Dict[str, Any]) -> Panel:
     return Panel(
         table,
         title=f"⚙️  Top Processes (Total: {total_count})",
-        border_style="blue"
+        border_style="bright_white"
     )

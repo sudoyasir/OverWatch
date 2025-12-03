@@ -23,17 +23,17 @@ def render(data: Dict[str, Any]) -> Panel:
     partitions = data.get("partitions", [])
     
     if not partitions:
-        return Panel("[yellow]No disk partitions found[/yellow]", title="💾 Disk", border_style="blue")
+        return Panel("[yellow]No disk partitions found[/yellow]", title="💾 Disk", border_style="bright_blue")
     
     table = Table(show_header=True, box=None, padding=(0, 1))
-    table.add_column("Mount", style="cyan")
+    table.add_column("Mount", style="bright_yellow")
     table.add_column("Type", style="dim")
-    table.add_column("Usage", style="white")
-    table.add_column("Free", style="green")
+    table.add_column("Usage", style="bright_white")
+    table.add_column("Free", style="bright_green")
     
     for partition in partitions[:5]:  # Show first 5 partitions
         percent = partition.get("percent", 0)
-        color = "green" if percent < 70 else "yellow" if percent < 90 else "red"
+        color = "bright_green" if percent < 70 else "bright_yellow" if percent < 90 else "bright_red"
         
         table.add_row(
             partition.get("mountpoint", ""),
@@ -51,5 +51,5 @@ def render(data: Dict[str, Any]) -> Panel:
     return Panel(
         table.grid() if not table.row_count else table,
         title="💾 Disk" + io_info,
-        border_style="blue"
+        border_style="bright_blue"
     )

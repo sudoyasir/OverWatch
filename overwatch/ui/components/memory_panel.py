@@ -22,15 +22,15 @@ def render(data: Dict[str, Any]) -> Panel:
         return Panel(f"[red]Error: {data['error']}[/red]", title="🔴 Memory", border_style="red")
     
     table = Table(show_header=False, box=None, padding=(0, 1))
-    table.add_column("Label", style="cyan")
-    table.add_column("Value", style="white")
+    table.add_column("Label", style="bright_magenta")
+    table.add_column("Value", style="bright_white")
     
     ram = data.get("ram", {})
     swap = data.get("swap", {})
     
     # RAM usage
     ram_percent = ram.get("percent", 0)
-    ram_color = "green" if ram_percent < 50 else "yellow" if ram_percent < 80 else "red"
+    ram_color = "bright_green" if ram_percent < 50 else "bright_yellow" if ram_percent < 80 else "bright_red"
     table.add_row(
         "RAM Usage",
         f"[{ram_color}]{ram_percent}%[/{ram_color}] - {ram.get('used_gb', 0):.2f} GB / {ram.get('total_gb', 0):.2f} GB"
@@ -42,7 +42,7 @@ def render(data: Dict[str, Any]) -> Panel:
     
     # Swap usage
     swap_percent = swap.get("percent", 0)
-    swap_color = "green" if swap_percent < 50 else "yellow" if swap_percent < 80 else "red"
+    swap_color = "bright_green" if swap_percent < 50 else "bright_yellow" if swap_percent < 80 else "bright_red"
     if swap.get("total_gb", 0) > 0:
         table.add_row(
             "Swap Usage",
@@ -51,4 +51,4 @@ def render(data: Dict[str, Any]) -> Panel:
     else:
         table.add_row("Swap Usage", "[dim]No swap configured[/dim]")
     
-    return Panel(table, title="🧠 Memory", border_style="blue")
+    return Panel(table, title="🧠 Memory", border_style="bright_magenta")

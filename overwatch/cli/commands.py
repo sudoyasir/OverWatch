@@ -27,11 +27,21 @@ def cli():
     help="Refresh rate in seconds (default: 1.0)",
     type=float,
 )
-def start(refresh):
+@click.option(
+    "--no-alerts",
+    is_flag=True,
+    default=False,
+    help="Disable alert monitoring and email notifications",
+)
+def start(refresh, no_alerts):
     """Start the OverWatch terminal dashboard."""
     click.echo(f"Starting OverWatch dashboard (refresh rate: {refresh}s)...")
+    if not no_alerts:
+        click.echo("Alert monitoring: ENABLED")
+    else:
+        click.echo("Alert monitoring: DISABLED")
     click.echo("Press Ctrl+C to exit")
-    start_dashboard(refresh_rate=refresh)
+    start_dashboard(refresh_rate=refresh, enable_alerts=not no_alerts)
 
 
 @cli.command()

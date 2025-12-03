@@ -21,8 +21,8 @@ def render(data: Dict[str, Any]) -> Panel:
         return Panel(f"[red]Error: {data['error']}[/red]", title="🔴 Network", border_style="red")
     
     table = Table(show_header=False, box=None, padding=(0, 1))
-    table.add_column("Label", style="cyan")
-    table.add_column("Value", style="white")
+    table.add_column("Label", style="bright_green")
+    table.add_column("Value", style="bright_white")
     
     # Total bandwidth
     total = data.get("io_total", {})
@@ -63,4 +63,4 @@ def render(data: Dict[str, Any]) -> Panel:
                 f"↓ {stats.get('mb_recv', 0):.1f} MB  ↑ {stats.get('mb_sent', 0):.1f} MB"
             )
     
-    return Panel(table, title="🌐 Network", border_style="blue")
+    return Panel(table, title="🌐 Network", border_style="bright_green")
