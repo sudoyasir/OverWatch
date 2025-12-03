@@ -301,7 +301,7 @@ overwatch/
 
 ## 🖼️ Screenshots
 
-*Dashboard screenshots would go here*
+![Dashboard Screenshot](./gh-assets/dashboard.png)
 
 ---
 
