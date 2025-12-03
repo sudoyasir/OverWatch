@@ -1,5 +1,7 @@
 """
 Main CLI entry point for OverWatch.
+
+Author: Yasir N. (@sudoyasir)
 """
 
 from overwatch.cli.commands import cli

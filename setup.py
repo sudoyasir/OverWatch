@@ -12,12 +12,17 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 setup(
     name="overwatch",
     version="0.1.0",
-    author="sudoyasir",
+    author="Yasir N.",
     author_email="y451rmahar@gmail.com",
     description="Advanced system monitoring CLI tool",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sudoyasir/overwatch",
+    project_urls={
+        "Bug Reports": "https://github.com/sudoyasir/overwatch/issues",
+        "Source": "https://github.com/sudoyasir/overwatch",
+        "Portfolio": "https://sudoyasir.space",
+    },
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",

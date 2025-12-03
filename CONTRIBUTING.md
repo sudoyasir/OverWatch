@@ -1,4 +1,15 @@
-# OverWatch Development Setup
+# Contributing to OverWatch
+
+Thank you for considering contributing to OverWatch!
+
+## Project Maintainer
+
+**Yasir N.**
+- GitHub: [@sudoyasir](https://github.com/sudoyasir)
+- Email: y451rmahar@gmail.com
+- Portfolio: [sudoyasir.space](https://sudoyasir.space)
+
+---
 
 ## Installation
 

@@ -1,6 +1,8 @@
 """
 FastAPI server for OverWatch.
 Provides REST API endpoints for system metrics.
+
+Author: Yasir N. (@sudoyasir)
 """
 
 from fastapi import FastAPI, HTTPException
@@ -14,8 +16,17 @@ from overwatch.core import cpu, memory, disk, network, processes, sensors
 # Create FastAPI app
 app = FastAPI(
     title="OverWatch API",
-    description="Advanced System Monitoring API",
+    description="Advanced System Monitoring API by Yasir N.",
     version="0.1.0",
+    contact={
+        "name": "Yasir N.",
+        "url": "https://sudoyasir.space",
+        "email": "y451rmahar@gmail.com",
+    },
+    license_info={
+        "name": "MIT License",
+        "url": "https://github.com/sudoyasir/overwatch/blob/main/LICENSE",
+    },
 )
 
 # Enable CORS

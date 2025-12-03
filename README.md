@@ -7,6 +7,7 @@ OverWatch is a powerful, terminal-based system monitor built with Python. It pro
 ![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-orange.svg)
+![Author](https://img.shields.io/badge/author-Yasir%20N.-blue.svg)
 
 ---
 
@@ -523,18 +524,30 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
+Developed entirely by **Yasir N.** ([@sudoyasir](https://github.com/sudoyasir))
+
+**Technologies Used:**
 - Built with [psutil](https://github.com/giampaolo/psutil) for system monitoring
 - UI powered by [Rich](https://github.com/Textualize/rich)
 - API built with [FastAPI](https://fastapi.tiangolo.com/)
 
 ---
 
-## 📧 Contact
+## 👨‍💻 Author
 
-For questions, issues, or suggestions:
-- GitHub Issues: https://github.com/sudoyasir/overwatch/issues
-- Email: info@overwatch.dev
+**Yasir N.**
+- GitHub: [@sudoyasir](https://github.com/sudoyasir)
+- Portfolio: [sudoyasir.space](https://sudoyasir.space)
+- Email: [y451rmahar@gmail.com](mailto:y451rmahar@gmail.com)
 
 ---
 
-**Made with ❤️ by the OverWatch Team**
+## 📧 Contact
+
+For questions, issues, or suggestions:
+- GitHub Issues: [github.com/sudoyasir/overwatch/issues](https://github.com/sudoyasir/overwatch/issues)
+- Email: [y451rmahar@gmail.com](mailto:y451rmahar@gmail.com)
+
+---
+
+**Made with ❤️ by [Yasir N.](https://sudoyasir.space)**
