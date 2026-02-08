@@ -1,0 +1,25 @@
+# Include in source distribution
+include LICENSE
+include README.md
+include CHANGELOG.md
+include CONTRIBUTING.md
+include PUBLISHING.md
+include pyproject.toml
+include setup.py
+include requirements.txt
+include Makefile
+include Dockerfile
+include install.sh
+include quick_setup.sh
+include publish.sh
+
+# Package data
+recursive-include overwatch *.json *.py
+
+# Exclude
+exclude .dockerignore
+recursive-exclude overwatch __pycache__ *.pyc *.pyo
+recursive-exclude tests __pycache__ *.pyc *.pyo
+prune .github
+prune gh-assets
+prune overwatch_monitor.egg-info

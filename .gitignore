@@ -137,3 +137,11 @@ Thumbs.db
 overwatch/alerts/thresholds.json.bak
 logs/
 *.log
+
+# Personal scripts & dev-only files (not needed by users)
+test_email.py
+test_overwatch.py
+configure.py
+monitor_with_alerts.py
+publish.sh
+PUBLISHING.md

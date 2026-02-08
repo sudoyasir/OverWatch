@@ -1,9 +1,25 @@
 """
 Telegram notification handler for OverWatch alerts.
+
+Configuration via environment variables or .env file:
+    TELEGRAM_BOT_TOKEN  - Bot token from @BotFather
+    TELEGRAM_CHAT_ID    - Your chat ID from @userinfobot
+
+Quick setup:
+    cp .env.example .env
+    # Edit .env with your Telegram credentials
 """
 
 import os
 from typing import Optional
+
+# Auto-load .env if available
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 import requests
 
 

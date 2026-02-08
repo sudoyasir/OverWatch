@@ -1,0 +1,99 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel>=0.41.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "overwatch-monitor"
+version = "0.1.0"
+description = "Advanced system monitoring CLI tool with real-time dashboard, alerts, and REST API"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Yasir N.", email = "y451rmahar@gmail.com"},
+]
+keywords = [
+    "monitoring", "system-monitor", "cli", "dashboard", "metrics",
+    "cpu", "memory", "disk", "network", "processes", "devops",
+    "sysadmin", "real-time", "terminal", "tui",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Information Technology",
+    "Topic :: System :: Monitoring",
+    "Topic :: System :: Systems Administration",
+    "Topic :: System :: Networking :: Monitoring",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "psutil>=5.9.0",
+    "rich>=13.0.0",
+    "click>=8.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+api = [
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.23.0",
+    "websockets>=11.0.0",
+]
+alerts = [
+    "requests>=2.31.0",
+]
+all = [
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.23.0",
+    "websockets>=11.0.0",
+    "requests>=2.31.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "build>=0.10.0",
+    "twine>=4.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/sudoyasir/overwatch"
+Documentation = "https://github.com/sudoyasir/overwatch#readme"
+Repository = "https://github.com/sudoyasir/overwatch"
+"Bug Tracker" = "https://github.com/sudoyasir/overwatch/issues"
+Changelog = "https://github.com/sudoyasir/overwatch/blob/main/CHANGELOG.md"
+Author = "https://sudoyasir.space"
+
+[project.scripts]
+overwatch = "overwatch.cli.main:main"
+
+[tool.setuptools.packages.find]
+include = ["overwatch*"]
+
+[tool.setuptools.package-data]
+overwatch = ["alerts/thresholds.json"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]

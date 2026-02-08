@@ -30,41 +30,132 @@ OverWatch is a powerful, terminal-based system monitor built with Python. It pro
 
 ## 📦 Installation
 
-### Quick Install with Virtual Environment (Recommended)
+OverWatch offers **multiple installation methods** — pick the one that works for you:
 
+### One-Line Install (Linux/macOS)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/sudoyasir/overwatch/main/install.sh | bash
+```
+
+This auto-detects your OS, installs dependencies if missing, and sets everything up.
+
+### Install from PyPI (Recommended)
+
+```bash
+# Core only (dashboard + CLI)
+pip install overwatch-monitor
+
+# With API server support
+pip install "overwatch-monitor[api]"
+
+# With alert notifications (email + telegram)
+pip install "overwatch-monitor[alerts]"
+
+# Everything included
+pip install "overwatch-monitor[all]"
+```
+
+Or use **pipx** for isolated CLI installation (no venv conflicts):
+```bash
+pipx install "overwatch-monitor[all]"
+```
+
+### Install from Source
+
+**Quick setup (recommended):**
 ```bash
 git clone https://github.com/sudoyasir/overwatch.git
 cd overwatch
-./quick_setup.sh
+./quick_setup.sh          # Installs everything
+```
+
+**Using Make:**
+```bash
+git clone https://github.com/sudoyasir/overwatch.git
+cd overwatch
+make install-all          # Or: make install (core only)
 source venv/bin/activate
 ```
 
-### Manual Installation
+**Manual:**
+```bash
+git clone https://github.com/sudoyasir/overwatch.git
+cd overwatch
+python3 -m venv venv && source venv/bin/activate
+pip install -e ".[all]"
+```
+
+### Docker
 
 ```bash
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
+# Dashboard mode
+docker run -it sudoyasir/overwatch
 
-# Install
-pip install -e .
+# API server mode
+docker run -p 8000:8000 sudoyasir/overwatch api
+
+# Build locally
+docker build -t overwatch . && docker run -it overwatch
+```
+
+### Run Without Installing
+
+```bash
+# Clone and run directly as a Python module
+git clone https://github.com/sudoyasir/overwatch.git
+cd overwatch
+pip install psutil rich click
+python -m overwatch start
+```
+
+### Modular Installation
+
+OverWatch uses **optional dependency groups** so you only install what you need:
+
+| Install Command | What You Get |
+|----------------|--------------|
+| `pip install overwatch-monitor` | Dashboard + CLI (core) |
+| `pip install "overwatch-monitor[api]"` | + FastAPI server & WebSocket |
+| `pip install "overwatch-monitor[alerts]"` | + Email & Telegram alerts |
+| `pip install "overwatch-monitor[all]"` | Everything |
+| `pip install "overwatch-monitor[dev]"` | + Testing & linting tools |
+
+### Makefile Targets
+
+If you cloned the repo, these shortcuts are available:
+
+```bash
+make install          # Core install
+make install-all      # All features
+make dev              # Development mode
+make run              # Launch dashboard
+make api              # Start API server
+make test             # Run tests
+make check            # Verify installation
+make clean            # Clean build artifacts
+make help             # Show all targets
 ```
 
 ### Requirements
 
 - Python 3.10 or higher
-- pip package manager
+- pip (or pipx) package manager
 
 ### Dependencies
 
-All dependencies are automatically installed:
+**Core** (always installed):
 - `psutil` - System and process utilities
 - `rich` - Terminal UI
 - `click` - CLI framework
+
+**API** (optional — `pip install "overwatch-monitor[api]"`):
 - `fastapi` - API server
 - `uvicorn` - ASGI server
-- `requests` - HTTP client
 - `websockets` - WebSocket support
+
+**Alerts** (optional — `pip install "overwatch-monitor[alerts]"`):
+- `requests` - HTTP client (for Telegram notifications)
 
 ---
 

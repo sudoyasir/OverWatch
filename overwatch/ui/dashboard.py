@@ -25,8 +25,22 @@ from overwatch.ui.components import (
     process_panel,
 )
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from .env file
+# Searches: cwd → project root → home directory
+from pathlib import Path as _Path
+
+_env_locations = [
+    _Path.cwd() / ".env",
+    _Path(__file__).resolve().parent.parent.parent / ".env",
+    _Path.home() / ".overwatch" / ".env",
+    _Path.home() / ".env",
+]
+for _env_path in _env_locations:
+    if _env_path.is_file():
+        load_dotenv(_env_path)
+        break
+else:
+    load_dotenv()  # fallback: default dotenv search
 
 
 class Dashboard:
@@ -257,7 +271,8 @@ class Dashboard:
             border_style = "bright_green"
         else:
             table.add_row("Status", "[bright_red]✗ Disabled[/bright_red]")
-            table.add_row("Info", "[dim]Configure .env[/dim]")
+            table.add_row("Setup", "[dim]cp .env.example .env[/dim]")
+            table.add_row("", "[dim]then edit .env[/dim]")
             border_style = "red"
         
         return Panel(table, title="📧 Email Alerts", border_style=border_style)

@@ -1,5 +1,17 @@
 """
 Email notification handler for OverWatch alerts.
+
+Configuration via environment variables or .env file:
+    EMAIL_SMTP_SERVER   - SMTP server (e.g. smtp.gmail.com)
+    EMAIL_SMTP_PORT     - SMTP port (default: 587)
+    EMAIL_SMTP_USERNAME - SMTP login username
+    EMAIL_SMTP_PASSWORD - SMTP password / app password
+    EMAIL_FROM          - Sender email address
+    EMAIL_TO            - Recipient email address
+
+Quick setup:
+    cp .env.example .env
+    # Edit .env with your SMTP credentials
 """
 
 import os
@@ -7,6 +19,13 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Optional
+
+# Auto-load .env if available
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 
 class EmailNotifier:
