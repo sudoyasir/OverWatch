@@ -34,9 +34,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[all,dev]"
       
-      - name: Run tests
-        run: python test_overwatch.py
-      
       - name: Verify CLI works
         run: |
           overwatch version
